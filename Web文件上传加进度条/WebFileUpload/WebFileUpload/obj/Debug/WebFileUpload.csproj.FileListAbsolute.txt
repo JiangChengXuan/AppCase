@@ -1,0 +1,5 @@
+C:\Users\Administrator\Desktop\Web文件上传加进度条\WebFileUpload\WebFileUpload\bin\WebFileUpload.dll.config
+C:\Users\Administrator\Desktop\Web文件上传加进度条\WebFileUpload\WebFileUpload\bin\WebFileUpload.dll
+C:\Users\Administrator\Desktop\Web文件上传加进度条\WebFileUpload\WebFileUpload\bin\WebFileUpload.pdb
+C:\Users\Administrator\Desktop\Web文件上传加进度条\WebFileUpload\WebFileUpload\obj\Debug\WebFileUpload.dll
+C:\Users\Administrator\Desktop\Web文件上传加进度条\WebFileUpload\WebFileUpload\obj\Debug\WebFileUpload.pdb

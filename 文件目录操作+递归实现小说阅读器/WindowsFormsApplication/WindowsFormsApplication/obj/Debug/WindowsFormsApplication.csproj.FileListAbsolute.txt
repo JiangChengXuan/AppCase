@@ -1,0 +1,9 @@
+C:\Users\Administrator\Desktop\文件目录操作+递归实现小说阅读器\WindowsFormsApplication\WindowsFormsApplication\bin\Debug\WindowsFormsApplication.exe.config
+C:\Users\Administrator\Desktop\文件目录操作+递归实现小说阅读器\WindowsFormsApplication\WindowsFormsApplication\bin\Debug\WindowsFormsApplication.exe
+C:\Users\Administrator\Desktop\文件目录操作+递归实现小说阅读器\WindowsFormsApplication\WindowsFormsApplication\bin\Debug\WindowsFormsApplication.pdb
+C:\Users\Administrator\Desktop\文件目录操作+递归实现小说阅读器\WindowsFormsApplication\WindowsFormsApplication\obj\Debug\WindowsFormsApplication.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\文件目录操作+递归实现小说阅读器\WindowsFormsApplication\WindowsFormsApplication\obj\Debug\WindowsFormsApplication.Form1.resources
+C:\Users\Administrator\Desktop\文件目录操作+递归实现小说阅读器\WindowsFormsApplication\WindowsFormsApplication\obj\Debug\WindowsFormsApplication.Properties.Resources.resources
+C:\Users\Administrator\Desktop\文件目录操作+递归实现小说阅读器\WindowsFormsApplication\WindowsFormsApplication\obj\Debug\WindowsFormsApplication.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\文件目录操作+递归实现小说阅读器\WindowsFormsApplication\WindowsFormsApplication\obj\Debug\WindowsFormsApplication.exe
+C:\Users\Administrator\Desktop\文件目录操作+递归实现小说阅读器\WindowsFormsApplication\WindowsFormsApplication\obj\Debug\WindowsFormsApplication.pdb

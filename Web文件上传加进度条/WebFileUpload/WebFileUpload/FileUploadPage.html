@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+
+  
+</head>
+<body>
+
+
+    <!--<form id="f1"   name="fm" method="post" enctype="multipart/form-data" action="FileUploadHandler.ashx">
+        <div id="jqmeter-container"></div>
+        <input type="text" name="fileName" />
+        <input type="file"  name="fileStream"  />
+        <input  type="submit" value="上传" name="sb"  />
+    </form>-->
+
+    <form id="uploadForm" name="fm" enctype="multipart/form-data">
+        <input type="text" name="fileName" /><br />
+        <input type="file" name="fileStream" />
+    </form><br />
+    <button id="upload">上传文件</button>
+   
+    <script src="https://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+    <script src="jqmeter.min.js"></script>
+    <script>
+
+        var goal = 100;
+       var  raised=0
+        $(function () {
+
+
+            var upload = function () {
+
+                var formData = new FormData($('#uploadForm')[0]);
+                $.ajax({
+                    type: 'post',
+                    url: "http://localhost:16186/FileUploadHandler.ashx", //上传文件的请求路径必须是绝对路劲
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                }).success(function (data) {
+                    console.log(data);
+                    
+                    if (goal == raised) {
+                        console.log('ok');
+                        return;
+                    } else {
+                        var json = JSON.parse(data);
+                        goal = json.json;
+                        raised = json.raised;
+                        upload();
+                    }
+
+                }).error(function () {
+                    alert("上传失败");
+
+                }); // END Ajax
+            }
+
+            $("#upload").click(function () {
+             
+                upload();
+            }); // END click
+
+            //$('#jqmeter-container').jQMeter({
+            //    goal: '$1,000', //必填参数 进度条的总长度
+            //    raised: '$200',//必填参数 进度条的当前进度
+            //    meterOrientation: 'horizontal',
+            //    width: '200px',
+            //    height: '50px'
+            //});
+
+        });
+
+    </script>
+</body>
+</html>
+ 

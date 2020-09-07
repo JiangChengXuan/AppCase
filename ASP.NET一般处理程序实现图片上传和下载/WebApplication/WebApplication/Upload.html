@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+
+
+
+        <div>
+
+            <form id="fmUpload" method="post" enctype="multipart/form-data" action="/UploadImg.ashx">
+                <table>
+                    <tr>
+                        <td>姓名：</td>
+                        <td><input id="txtName" name="txtName" type="text" /></td>
+                    </tr>
+
+                    <tr>
+                        <td>请选择头像：</td>
+                        <td><input id="fileStream" name="fileStream" type="file" /></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><input id="btnUpload" type="submit" value="上传" /></td>
+                    </tr>
+                </table>
+
+            </form>
+
+        </div>
+
+
+<script>
+
+    var fileTypes = ["JPG","GIF","PNG","BMP"];
+
+    window.onload = function ()
+    {
+ 
+
+        document.getElementById("fmUpload").onsubmit = function ()
+        {
+           return FileCheck();
+        }
+
+    }
+
+    //上传效验
+    var FileCheck = function ()
+    {
+        var name = document.getElementById("txtName");
+        var file = document.getElementById("fileStream");
+
+        if (name.value=="" || file.value=="") {
+            alert("姓名和头像都不能为空！");
+            return false;
+        }
+         
+        var fileFullName = file.value;  // 全文件名
+        var fileExtName = fileFullName.substring(fileFullName.lastIndexOf('.') + 1); //文件扩展名
+
+        if (fileTypes.indexOf(fileExtName.toUpperCase()) < 0)  //上传文件非图片
+        {
+            alert("文件不是图片类型！");
+            return false;
+        }
+
+
+        return true;
+    }   // END FileCheck（）
+
+
+</script>
+</body>
+</html>

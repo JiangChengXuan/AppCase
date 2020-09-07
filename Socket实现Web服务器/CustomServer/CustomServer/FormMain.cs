@@ -1,0 +1,368 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Net.Sockets;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Threading;
+using CustomServer.HttpModel;
+using System.Collections.Concurrent;
+using System.IO;
+namespace CustomServer
+{
+    public partial class FormMain : Form
+    {
+        public FormMain()
+        {
+            InitializeComponent();
+             TextBox.CheckForIllegalCrossThreadCalls = false;
+             Label.CheckForIllegalCrossThreadCalls = false;
+             //txtIP.Text = GetLoaclIP(); // 设置默认IP
+        }
+
+
+        /// <summary>
+        /// 获取程序所在电脑的IP地址
+        /// </summary>
+        /// <returns>IP地址</returns>
+        private string GetLoaclIP()
+        {
+            try
+            {
+                IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+                if (ipHostInfo == null)
+                {
+                    return "127.0.0.1";
+                }
+                return ipHostInfo.AddressList[0].ToString();
+            }
+            catch (Exception)
+            {     
+              return "127.0.0.1";
+            }
+        } // END GetLoaclIP（）
+
+
+        /// <summary>
+        /// 效验IP格式的正则表达式
+        /// </summary>
+       private readonly  string pattern = @"^(([1-9]\d?)|(1\d{2})|(2[01]\d)|(22[0-3]))(\.((1?\d\d?)|(2[04]/d)|(25[0-5]))){3}$";
+
+        /// <summary>
+        /// 不允许创建服务器的端口号
+        /// </summary>
+       private readonly List<string> PortBlackList = new List<string>() { "80" };
+
+  
+
+        /// <summary>
+        /// 服务器目录
+        /// </summary>
+       public string ServerPath { get; set; }
+
+        /// <summary>
+        /// 效验表单输入项
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckFormInput(out string msg)
+        {
+            string IP = txtIP.Text.Trim();
+            string Port = txtPort.Text.Trim();
+            string serverPath = txtServerPath.Text.Trim();
+            msg = string.Empty;
+
+            // 非空
+            if (string.IsNullOrEmpty(IP) || string.IsNullOrEmpty(Port) || string.IsNullOrEmpty(serverPath))
+            {
+                msg = "表单所有输入项为必填";
+                return false;
+            }
+
+            //IP
+            if (!Regex.IsMatch(IP,pattern))
+            {
+                msg = "IP地址不合法";
+                return false;
+            }
+
+            //端口号
+            if (PortBlackList.Contains(Port))
+            {
+                  msg = "无法使用该端口号";
+                return false;
+            }
+
+            return true;
+        } // END CheckFormInput（）
+
+
+
+
+        // 线程信号
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
+
+        /// <summary>
+        /// 【Main】创建服务并开启监听
+        /// </summary>
+        private void OpenServer_Click(object sender, EventArgs e)
+        {
+       
+
+            #region 检验表单
+
+            string msg = string.Empty;
+            string ip = txtIP.Text.Trim();
+            string port = txtPort.Text.Trim();
+
+            if (!CheckFormInput(out msg))
+            {
+                MessageBox.Show(msg);
+                return;
+            }
+            this.ServerPath = txtServerPath.Text.Trim();
+
+            #endregion
+ 
+            StartListening(ip,port);  //开始监听
+          
+        }// END OpenServer_Click（）
+
+ 
+
+
+         
+        /// <summary>
+        /// 选择服务器根目录（客户端访问资源所在的目录）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            DialogResult dr = fbd.ShowDialog();
+
+            if (dr!= System.Windows.Forms.DialogResult.OK) return;
+
+            txtServerPath.Text = fbd.SelectedPath;
+
+        }
+
+
+        /// <summary>
+        /// 开始监听
+        /// </summary>
+        public void StartListening(string ip, string Port)
+        {
+            //创建网络对象
+            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+            IPAddress ipAddress = IPAddress.Parse(ip);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, Convert.ToInt32(Port));
+
+
+            //创建一个 TCP/IP协议的socket
+            Socket listener = new Socket(ipAddress.AddressFamily,
+                 SocketType.Stream, ProtocolType.Tcp);
+
+            //进行绑定，并开始进行监听进入的连接
+            try
+            {
+                listener.Bind(localEndPoint);
+                listener.Listen(100);
+     
+                Thread thread = new Thread(() =>
+                {
+                     
+                        while (true)
+                        {
+                            //设置事件为无信号状态
+                            allDone.Reset();
+
+                            //使用异步socket侦听连接
+                            labPrintInfo.Text = "服务启动，开始侦听连接（推荐使用浏览器访问服务资源）";
+                            listener.BeginAccept( new AsyncCallback(AcceptCallback),listener);
+
+                            //等待连接完成后再继续
+                            allDone.WaitOne();
+                        }  // END while 
+                
+
+                });  // Thread
+
+                thread.IsBackground = true;
+                thread.Start(); 
+
+            }  // try
+            catch (Exception ex)
+            {
+                labPrintInfo.Text = "服务出现异常： "+ex.Message;
+            }
+
+        }// END StartListening（）
+
+       /// <summary>
+       /// 接受到客户端Socket进行处理
+       /// </summary>
+       /// <param name="ar"></param>
+        public void AcceptCallback(IAsyncResult ar)
+        { 
+                //通知主线程继续
+            allDone.Set();
+
+            //获取处理客户端的socket
+            Socket listener = (Socket)ar.AsyncState; //监听socket
+            Socket handler = listener.EndAccept(ar);//用于处理客户端请求的socket
+
+            //创建状态对象
+            HttpRequest state = new HttpRequest();
+            state.workSocket = handler;
+            state.ServerPath = txtServerPath.Text.Trim();
+
+            //开始从客户端的socket中异步接收数据
+            handler.BeginReceive(state.buffer, 0, HttpRequest.BufferSize, 0,
+           new AsyncCallback(ReadCallback), state);
+
+        } // END AcceptCallback（）
+
+        /// <summary>
+        /// 读取客户端请求的数据
+        /// </summary>
+        /// <param name="ar"></param>
+        public   void ReadCallback(IAsyncResult ar)
+        {
+            String content = String.Empty;
+            byte [] byteData = new byte[0];
+
+                //获取数据对象和处理客户端请求的Socket对象
+            HttpRequest state = (HttpRequest)ar.AsyncState;
+            Socket handler = state.workSocket;
+
+            // 从“处理客户端请求的Socket对象”中读取数据
+            int bytesRead = handler.EndReceive(ar);
+
+            if (bytesRead > 0)  
+            {
+                //处理请求报文并根据请求情况生成返回的数据
+                state.WriteToMsg(Encoding.UTF8.GetString(
+                    state.buffer, 0, bytesRead));
+                int httpCode;
+                byte[] outPutByte = state.ProcessRequest(out httpCode);
+                if (outPutByte!=null&&outPutByte.Length>0)
+                {
+                    HttpResponse response = new HttpResponse(outPutByte, state.FileExtName);
+                    List<byte> list = new List<byte>();
+                    list.AddRange(response.GetHeaderResponse(httpCode));
+                    list.AddRange(outPutByte);
+                    byteData = list.ToArray();
+                }
+                 
+
+                if (byteData.Length > 0 && outPutByte.Length>0)
+                {
+                    // 发送消息给客户端
+                    Send(handler, byteData);
+                    PrintRequestInfo(state);
+                }
+                else
+                {
+                    // Not all data received. Get more.  
+                    handler.BeginReceive(state.buffer, 0, HttpRequest.BufferSize, 0,
+                    new AsyncCallback(ReadCallback), state);
+                }
+
+            }
+        } // END ReadCallback（）
+
+
+        /// <summary>
+        /// 发送消息给客户端
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="data"></param>
+        private   void Send(Socket handler, byte[] byteData)
+        {
+            // Convert the string data to byte data using ASCII encoding.  
+            //byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+            // 开始将数据发回到请求客户端
+            handler.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(SendCallback), handler);
+
+        }// END Send（）
+
+        /// <summary>
+        /// 发送客户端之后的回调处理
+        /// </summary>
+        /// <param name="ar"></param>
+        private   void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the socket from the state object.  
+                Socket handler = (Socket)ar.AsyncState;
+
+                // 完成向请求客户端发送数据。
+                int bytesSent = handler.EndSend(ar);
+               
+                handler.Shutdown(SocketShutdown.Both);
+                handler.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+
+        /// <summary>
+        /// 将输出给客户端的信息打印
+        /// </summary>
+        /// <param name="request"></param>
+        private void PrintRequestInfo(HttpRequest request)
+        {
+            pictureBox1.Hide();
+            pictureBox1.ResetText();
+            txtHtml.Hide();
+            txtHtml.Text = string.Empty;
+    
+
+            if (request.ParameterDic.Count>0)
+            {
+                byte[] bt = request.ProcessHttp();
+                string getInfo = Encoding.UTF8.GetString(bt);
+                labPrintInfo.Text += Environment.NewLine + getInfo;
+            }
+
+            if (request.FileExtName == ".html" &&! string.IsNullOrEmpty(request.RequestFilePath))
+            {
+                string html = File.ReadAllText(request.RequestFilePath);
+                txtHtml.Text = html;
+                txtHtml.Show();
+            }
+            else if (request.FileExtName == ".jpg"&&! string.IsNullOrEmpty(request.RequestFilePath))
+            {
+                pictureBox1.Load(request.RequestFilePath);
+                pictureBox1.Show();
+      
+            }
+          
+ 
+        }  // END PrintRequestInfo（）
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            this.Width = 1000;
+            this.Height = 666;
+            pictureBox1.Hide();
+            txtHtml.Hide();
+        } // END PrintRequestInfo（）
+
+
+    } //END class
+}

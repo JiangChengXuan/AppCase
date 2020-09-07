@@ -1,0 +1,5 @@
+C:\Users\Administrator\Desktop\GDI+生成验证码\GDI+生成验证码\GDI+生成验证码\bin\GDI+生成验证码.dll.config
+C:\Users\Administrator\Desktop\GDI+生成验证码\GDI+生成验证码\GDI+生成验证码\bin\GDI+生成验证码.dll
+C:\Users\Administrator\Desktop\GDI+生成验证码\GDI+生成验证码\GDI+生成验证码\bin\GDI+生成验证码.pdb
+C:\Users\Administrator\Desktop\GDI+生成验证码\GDI+生成验证码\GDI+生成验证码\obj\Debug\GDI+生成验证码.dll
+C:\Users\Administrator\Desktop\GDI+生成验证码\GDI+生成验证码\GDI+生成验证码\obj\Debug\GDI+生成验证码.pdb

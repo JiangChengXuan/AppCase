@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+
+    <div>
+        <img id="code" src="ValidateCodeHandler.ashx" />
+        <a href="javascript:void(0)" onclick="GetCode()" >看不清</a>
+    </div>
+
+    <script type="text/javascript" >
+      
+        var GetCode = function () {
+             
+            document.getElementById("code").src = "ValidateCodeHandler.ashx?date=" + Math.random()*100;
+            return false;
+
+        }
+
+
+    </script>
+</body>
+</html>
