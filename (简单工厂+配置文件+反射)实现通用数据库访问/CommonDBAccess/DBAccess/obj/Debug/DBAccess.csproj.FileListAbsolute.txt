@@ -1,5 +1,0 @@
-C:\Users\Administrator\Desktop\通用数据库访问(简单工厂+配置文件+反射)\CommonDBAccess\DBAccess\bin\Debug\DBAccess.dll
-C:\Users\Administrator\Desktop\通用数据库访问(简单工厂+配置文件+反射)\CommonDBAccess\DBAccess\bin\Debug\DBAccess.pdb
-C:\Users\Administrator\Desktop\通用数据库访问(简单工厂+配置文件+反射)\CommonDBAccess\DBAccess\bin\Debug\System.Data.SQLite.dll
-C:\Users\Administrator\Desktop\通用数据库访问(简单工厂+配置文件+反射)\CommonDBAccess\DBAccess\obj\Debug\DBAccess.dll
-C:\Users\Administrator\Desktop\通用数据库访问(简单工厂+配置文件+反射)\CommonDBAccess\DBAccess\obj\Debug\DBAccess.pdb

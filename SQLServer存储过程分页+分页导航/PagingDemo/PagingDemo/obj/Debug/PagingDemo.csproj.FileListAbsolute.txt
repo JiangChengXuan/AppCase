@@ -1,6 +1,0 @@
-C:\Users\Administrator\Desktop\SQLServer存储过程分页+分页导航\PagingDemo\PagingDemo\bin\PagingDemo.dll.config
-C:\Users\Administrator\Desktop\SQLServer存储过程分页+分页导航\PagingDemo\PagingDemo\bin\PagingDemo.dll
-C:\Users\Administrator\Desktop\SQLServer存储过程分页+分页导航\PagingDemo\PagingDemo\bin\PagingDemo.pdb
-C:\Users\Administrator\Desktop\SQLServer存储过程分页+分页导航\PagingDemo\PagingDemo\obj\Debug\PagingDemo.dll
-C:\Users\Administrator\Desktop\SQLServer存储过程分页+分页导航\PagingDemo\PagingDemo\obj\Debug\PagingDemo.pdb
-C:\Users\Administrator\Desktop\SQLServer存储过程分页+分页导航\PagingDemo\PagingDemo\obj\Debug\PagingDemo.csprojResolveAssemblyReference.cache

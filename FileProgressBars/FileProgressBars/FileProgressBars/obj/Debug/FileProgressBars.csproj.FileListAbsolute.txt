@@ -1,9 +1,0 @@
-C:\Users\Administrator\Desktop\FileProgressBars\FileProgressBars\FileProgressBars\bin\Debug\FileProgressBars.exe.config
-C:\Users\Administrator\Desktop\FileProgressBars\FileProgressBars\FileProgressBars\bin\Debug\FileProgressBars.exe
-C:\Users\Administrator\Desktop\FileProgressBars\FileProgressBars\FileProgressBars\bin\Debug\FileProgressBars.pdb
-C:\Users\Administrator\Desktop\FileProgressBars\FileProgressBars\FileProgressBars\obj\Debug\FileProgressBars.csprojResolveAssemblyReference.cache
-C:\Users\Administrator\Desktop\FileProgressBars\FileProgressBars\FileProgressBars\obj\Debug\FileProgressBars.Form1.resources
-C:\Users\Administrator\Desktop\FileProgressBars\FileProgressBars\FileProgressBars\obj\Debug\FileProgressBars.Properties.Resources.resources
-C:\Users\Administrator\Desktop\FileProgressBars\FileProgressBars\FileProgressBars\obj\Debug\FileProgressBars.csproj.GenerateResource.Cache
-C:\Users\Administrator\Desktop\FileProgressBars\FileProgressBars\FileProgressBars\obj\Debug\FileProgressBars.exe
-C:\Users\Administrator\Desktop\FileProgressBars\FileProgressBars\FileProgressBars\obj\Debug\FileProgressBars.pdb
